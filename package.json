@@ -17,7 +17,12 @@
         "plugin"
     ],
     "devDependencies": {
-        "grapesjs-cli": "^2.0.0"
+        "grapesjs-cli": "^2.0.0",
+        "postcss": "^8.4.31",
+        "postcss-import": "^15.1.0",
+        "postcss-loader": "^7.3.3",
+        "autoprefixer": "^10.4.16",
+        "tailwindcss": "^3.3.5"
     },
     "license": "MIT",
     "dependencies": {

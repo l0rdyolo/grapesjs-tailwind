@@ -124,7 +124,7 @@ import { source as z4 } from './data/footer-4'
 import { source as z4s } from './data/icons/footer-4'
 import { source as z5 } from './data/footer-5'
 import { source as z5s } from './data/icons/footer-5'
-import { source as carousel } from './data/carousel'
+import { source as carousel } from '../carousel'
 
 const getSvgHtml = (svg) => {
   // SVG string kontrolü
