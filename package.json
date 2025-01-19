@@ -8,7 +8,7 @@
         "url": "https://github.com/Ju99ernaut/grapesjs-tailwind.git"
     },
     "scripts": {
-        "start": "grapesjs-cli serve",
+        "start": "set NODE_OPTIONS=--openssl-legacy-provider && grapesjs-cli serve",
         "build": "grapesjs-cli build",
         "bump": "npm version patch -m 'Bump v%s'"
     },
@@ -21,6 +21,7 @@
     },
     "license": "MIT",
     "dependencies": {
-        "css": "^3.0.0"
+        "css": "^3.0.0",
+        "grapesjs-tailwind": "^1.0.11"
     }
 }
