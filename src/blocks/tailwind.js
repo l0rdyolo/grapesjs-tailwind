@@ -124,15 +124,43 @@ import { source as z4 } from './data/footer-4'
 import { source as z4s } from './data/icons/footer-4'
 import { source as z5 } from './data/footer-5'
 import { source as z5s } from './data/icons/footer-5'
+import { source as carousel } from './data/carousel'
 
 const getSvgHtml = (svg) => {
-  if (typeof window === 'undefined') return ''
-  svg.setAttribute('width', '100%')
-  svg.setAttribute('height', '100%')
-  return svg.outerHTML
-}
+  // SVG string kontrolü
+  if (typeof svg === 'string') {
+    return svg;
+  }
+  
+  // SVG element kontrolü
+  if (svg instanceof Element) {
+    return svg.outerHTML;
+  }
+
+  // SVG obje kontrolü
+  if (svg && typeof svg === 'object') {
+    try {
+      const svgElement = document.createElement('div');
+      svgElement.innerHTML = svg.content || '';
+      return svgElement.innerHTML;
+    } catch (error) {
+      console.warn('SVG işlenirken hata oluştu:', error);
+      return '';
+    }
+  }
+
+  return '';
+};
 
 const sources = [
+  {
+    id: 'carousel-block-1',
+    class: '',
+    label: carousel,
+    content: carousel,
+    category: 'Carousel',
+    // order: 1
+  },
   {
     id: 'blog-block-1',
     // class: 'fa fa-map-o',

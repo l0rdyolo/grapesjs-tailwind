@@ -22,6 +22,9 @@
     "license": "MIT",
     "dependencies": {
         "css": "^3.0.0",
-        "grapesjs-tailwind": "^1.0.11"
+        "grapesjs-tailwind": "^1.0.11",
+        "tailwindcss": "^3.x",
+        "postcss": "^8.x",
+        "autoprefixer": "^10.x"
     }
 }

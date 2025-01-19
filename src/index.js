@@ -18,7 +18,6 @@ export default (editor, opts = {}) => {
 
   // Add blocks
   loadBlocks(editor, options);
-  // Add commands
   loadCommands(editor, options);
   // Load i18n files
   editor.I18n && editor.I18n.addMessages({
@@ -27,8 +26,22 @@ export default (editor, opts = {}) => {
   });
 
   const appendTailwindCss = async (frame) => {
-    const iframe = frame.view.getEl();
+    // Frame kontrolü
+    if (!frame) return;
 
+    // Frame'in yüklenmesini bekle
+    await new Promise(resolve => {
+      const checkView = () => {
+        if (frame.view) {
+          resolve();
+        } else {
+          setTimeout(checkView, 50);
+        }
+      };
+      checkView();
+    });
+
+    const iframe = frame.view.getEl();
     if (!iframe) return;
 
     const { tailwindPlayCdn, plugins, config, cover } = options;
@@ -43,7 +56,7 @@ export default (editor, opts = {}) => {
     const cssStyle = document.createElement('style');
     cssStyle.innerHTML = cover;
 
-    // checks iframe is ready before loading Tailwind CSS - issue with firefox
+    // checks iframe is ready before loading Tailwind CSS
     const f = setInterval(() => {
       const doc = iframe.contentDocument;
       if (doc && doc.readyState && doc.readyState === 'complete') {
@@ -51,7 +64,7 @@ export default (editor, opts = {}) => {
         doc.head.appendChild(cssStyle);
         clearInterval(f);
       }
-    }, 100)
+    }, 100);
   }
 
   editor.Canvas.getModel()['on']('change:frames', (m, frames) => {
