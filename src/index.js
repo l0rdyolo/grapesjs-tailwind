@@ -19,7 +19,11 @@ const addDesignerStyles = (editor) => {
         { value: 'flex', name: 'Flex' },
         { value: 'grid', name: 'Grid' },
         { value: 'hidden', name: 'Hidden' }
-      ]
+      ],
+      // Tailwind sınıflarını uygula
+      toStyle(value) {
+        return { class: value };
+      }
     }, {
       name: 'Position',
       property: 'position',
@@ -29,7 +33,10 @@ const addDesignerStyles = (editor) => {
         { value: 'relative', name: 'Relative' },
         { value: 'absolute', name: 'Absolute' },
         { value: 'fixed', name: 'Fixed' }
-      ]
+      ],
+      toStyle(value) {
+        return { class: value };
+      }
     }]
   });
 
@@ -41,14 +48,17 @@ const addDesignerStyles = (editor) => {
       name: 'Width',
       property: 'width',
       type: 'select',
-      defaults: 'auto',
+      defaults: 'w-auto',
       options: [
         { value: 'w-auto', name: 'Auto' },
         { value: 'w-full', name: '100%' },
         { value: 'w-1/2', name: '50%' },
         { value: 'w-1/3', name: '33.33%' },
         { value: 'w-1/4', name: '25%' }
-      ]
+      ],
+      toStyle(value) {
+        return { class: value };
+      }
     }, {
       name: 'Height',
       property: 'height',
@@ -95,7 +105,10 @@ const addDesignerStyles = (editor) => {
         { value: 'text-base', name: 'Normal' },
         { value: 'text-lg', name: 'Large' },
         { value: 'text-xl', name: 'Extra Large' }
-      ]
+      ],
+      toStyle(value) {
+        return { class: value };
+      }
     }, {
       name: 'Font Weight',
       property: 'font-weight',
@@ -124,7 +137,10 @@ const addDesignerStyles = (editor) => {
         { value: 'opacity-50', name: '50%' },
         { value: 'opacity-75', name: '75%' },
         { value: 'opacity-100', name: '100%' }
-      ]
+      ],
+      toStyle(value) {
+        return { class: value };
+      }
     }, {
       name: 'Shadow',
       property: 'box-shadow',
@@ -216,5 +232,29 @@ export default (editor, opts = {}) => {
 
   editor.on('load', () => {
     appendTailwindCss(editor.Canvas.getModel());
+  });
+
+  // Style değişikliklerini dinle ve sınıfları uygula
+  editor.on('component:selected', (component) => {
+    if (!component) return;
+    
+    // Mevcut sınıfları koru
+    const existingClasses = component.getClasses();
+    
+    // Stil değişikliklerini dinle
+    component.on('change:style', () => {
+      const style = component.getStyle();
+      let classes = [...existingClasses];
+      
+      // Her stil özelliği için Tailwind sınıfını ekle
+      Object.entries(style).forEach(([prop, value]) => {
+        if (value && value.class) {
+          classes.push(value.class);
+        }
+      });
+      
+      // Sınıfları güncelle
+      component.setClass(classes);
+    });
   });
 };
